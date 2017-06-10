@@ -7,4 +7,4 @@ This also has support for returning a JSON response via a url parameter. To get 
 curl http://example.com?format=json
 ```
 
-otherwise, for plaintext response, no url parameter is needed.
+Otherwise, for plaintext response, no url parameter is needed.
