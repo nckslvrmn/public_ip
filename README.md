@@ -1,5 +1,5 @@
 # public_ip
-Returns your public IP using only the nginx configuration file.
+Returns your public IP using a small lambda.
 
 This also has support for returning a JSON response via a url parameter. To get the json response, simply do:
 
