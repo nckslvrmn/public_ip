@@ -7,7 +7,7 @@ def handler(event, _):
         content_type = 'text/plain'
         response_code = 500
     elif event.get('queryStringParameters', {}).get('format') == 'json':
-        body = f'{ "ip": "{client_ip}" }'
+        body = f'{{ "ip": "{client_ip}" }}'
         content_type = 'application/json'
     else:
         body = client_ip
