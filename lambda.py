@@ -1,18 +1,29 @@
 def handler(event, _):
-    client_ip = event.get('headers', {}).get('x-forwarded-for').split(',')[0]
-    response_code = 200
+    x_fwd = event.get('headers', {}).get('x-forwarded-for')
 
-    if client_ip is None:
-        body = 'couldnt retrieve public IP from x-forwarded-for header'
-        content_type = 'text/plain'
-        response_code = 500
-    elif event.get('queryStringParameters', {}).get('format') == 'json':
-        body = f'{{ "ip": "{client_ip}" }}'
-        content_type = 'application/json'
-    else:
-        body = client_ip
-        content_type = 'text/plain'
+    if x_fwd is None:
+        return response(
+            500,
+            'text/plain',
+            'couldnt retrieve public IP'
+        )
 
+    client_ip = x_fwd.split(',')[0]
+    if event.get('queryStringParameters', {}).get('format') == 'json':
+        return response(
+            200,
+            'application/json',
+            f'{{"ip":"{client_ip}"}}'
+        )
+
+    return response(
+        200,
+        'text/plain',
+        client_ip
+    )
+
+
+def response(response_code, content_type, body):
     return {
         'statusCode': response_code,
         'headers': {
@@ -21,5 +32,5 @@ def handler(event, _):
             'Pragma': 'no-cache',
             'Expires': 0
         },
-        'body': body
+        'body': f'{body}\n'
     }
